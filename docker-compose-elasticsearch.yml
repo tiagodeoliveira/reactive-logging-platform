@@ -1,0 +1,41 @@
+kibana4:
+  image: kibana:4.1.1
+  links:
+    - elasticsearch-client:es-client
+  ports:
+  - 5601:5601
+  environment:
+    ELASTICSEARCH_URL: "http://es-client:9200"
+kopf:
+  image: lmenezes/elasticsearch-kopf
+  links:
+    - elasticsearch-client:es-client
+  ports:
+  - 80:80
+  environment:
+  - KOPF_SERVER_NAME=elasticsearch
+  - KOPF_ES_SERVERS=es-client:9200
+
+elasticsearch-client:
+  image: zenviavas/elasticsearch
+  links:
+  - elasticsearch-master
+  expose:
+  - "9200"
+  environment:
+  - CLUSTER=zenvia
+  - CLIENT_NODE=true
+  - UNICAST_HOSTS=elasticsearch-master
+elasticsearch-data:
+  image: zenviavas/elasticsearch
+  links:
+  - elasticsearch-master
+  environment:
+  - CLUSTER=zenvia
+  - DATA_NODE=true
+  - UNICAST_HOSTS=elasticsearch-master
+elasticsearch-master:
+  image: zenviavas/elasticsearch
+  environment:
+  - CLUSTER=zenvia
+  - MASTER_NODE=true

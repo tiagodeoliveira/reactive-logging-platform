@@ -1,0 +1,26 @@
+kafka:
+  image: zenviavas/kafka
+  ports:
+    - "9092"
+    - "8005:8005"
+  links:
+    - zookeeper:zk
+  volumes:
+  - /var/run/docker.sock:/var/run/docker.sock
+  environment:
+    HOSTNAME_COMMAND: route -n | awk '/UG[ \t]/{print $$2}'
+    JMX_PORT: 8005
+    KAFKA_CREATE_TOPICS: info:1:1,warn:1:1
+kafka-manager:
+  image: sheepkiller/kafka-manager
+  links:
+    - zookeeper
+  ports:
+  - "9000:9000"
+  environment:
+  - ZK_HOSTS=zookeeper:2181
+  - APPLICATION_SECRET=letmein
+zookeeper:
+  image: wurstmeister/zookeeper
+  ports:
+    - "2181:2181"
