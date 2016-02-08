@@ -1,4 +1,4 @@
-FROM elasticsearch:2.1
+FROM elasticsearch:2.2
 
 COPY run.sh /run.sh
 RUN chmod a+x /run.sh

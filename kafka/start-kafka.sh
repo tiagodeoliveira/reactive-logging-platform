@@ -44,9 +44,16 @@ KAFKA_SERVER_PID=$!
 
 while netstat -lnt | awk '$4 ~ /:9092$/ {exit 1}'; do sleep 1; done
 
+if [[ -n "$JMX_EXPOSE" ]]; then
+  export PUBLIC_JMX_PORT=$(docker port `hostname` ${JMX_PORT} | sed -r "s/.*:(.*)/\1/g")
+  BROKER_ID=$(cat /kafka/kafka-logs-${HOSTNAME}/meta.properties | grep broker.id | cut -d= -f2)
+  NEW_BROKER_JSON=$(echo "get /brokers/ids/${BROKER_ID}" | ./$KAFKA_HOME/bin/kafka-run-class.sh org.apache.zookeeper.ZooKeeperMain -server ${KAFKA_ZOOKEEPER_CONNECT} | sed -n '8,9p' | jq -c --arg PUBLIC_JMX_PORT $PUBLIC_JMX_PORT '.jmx_port=($PUBLIC_JMX_PORT|tonumber)')
+  echo "set /brokers/ids/${BROKER_ID} ${NEW_BROKER_JSON}" | ./$KAFKA_HOME/bin/kafka-run-class.sh org.apache.zookeeper.ZooKeeperMain -server ${KAFKA_ZOOKEEPER_CONNECT}
+fi
+
 if [[ -n $KAFKA_CREATE_TOPICS ]]; then
-    echo "Creating topics $KAFKA_CREATE_TOPICS"
     unset JMX_PORT
+    echo "Creating topics $KAFKA_CREATE_TOPICS"
     IFS=','; for topicToCreate in $KAFKA_CREATE_TOPICS; do
         IFS=':' read -a topicConfig <<< "$topicToCreate"
         $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $KAFKA_ZOOKEEPER_CONNECT --replication-factor ${topicConfig[2]} --partition ${topicConfig[1]} --topic "${topicConfig[0]}"
