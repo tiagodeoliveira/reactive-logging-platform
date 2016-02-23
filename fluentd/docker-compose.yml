@@ -1,0 +1,16 @@
+fluentdprocessor:
+  image: zenviavas/fluentd
+  external_links:
+  - zookeeper/zookeeper:zookeeper
+  - elasticsearch/elasticsearch-clients:elasticsearch
+  environment:
+  - FLUENTD_CONFIG=kafka2es
+fluentdreceiver:
+  image: zenviavas/fluentd
+  external_links:
+  - zookeeper/zookeeper:zookeeper
+  ports:
+  - "9880:9880"
+  - "24224:24224"
+  environment:
+  - FLUENTD_CONFIG=app2kafka

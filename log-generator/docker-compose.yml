@@ -1,0 +1,4 @@
+logGenerator:
+  image: zenviavas/log-generator:0.1
+  external_links:
+  - fluentd/fluentdreceiver:fluentdreceiver

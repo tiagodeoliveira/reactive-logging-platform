@@ -1,0 +1,4 @@
+fluentdprocessor:
+  scale: 3
+fluentdreceiver:
+  scale: 3

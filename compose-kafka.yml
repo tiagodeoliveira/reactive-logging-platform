@@ -1,9 +1,9 @@
 kafka-manager:
   image: sheepkiller/kafka-manager
-  links:
-  - zookeeper-3
-  - zookeeper-2
-  - zookeeper-1
+  external_links:
+  - zookeeper_zookeeper-3_1:zookeeper-3
+  - zookeeper_zookeeper-2_1:zookeeper-2
+  - zookeeper_zookeeper-1_1:zookeeper-1
   ports:
   - "9000:9000"
   environment:
@@ -15,10 +15,10 @@ kafka:
   expose:
   - "9092"
   - "8005"
-  links:
-  - zookeeper-3
-  - zookeeper-2
-  - zookeeper-1
+  external_links:
+  - zookeeper_zookeeper-3_1:zookeeper-3
+  - zookeeper_zookeeper-2_1:zookeeper-2
+  - zookeeper_zookeeper-1_1:zookeeper-1
   volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   environment:

@@ -1,0 +1,9 @@
+[template]
+prefix = "/self/container"
+src = "hostname.tmpl"
+dest = "/opt/kafka/conf.d/hostname"
+owner = "root"
+mode = "0644"
+keys = [
+  "/primary_ip",
+]
