@@ -1,6 +1,6 @@
 # An elastic and reactive-ish logging platform
 
-This stack is meant to be an 'easy to scale' logging platform.
+This stack is meant to be an 'easy to scale' logging platform, the [presentation link is here](https://github.com/tiagodeoliveira/docker-log-platform-presentation).
 
 It leverages of the kafka high throughput to feed and elasticsearch cluster.
 
