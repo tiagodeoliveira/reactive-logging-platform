@@ -1,2 +1,9 @@
 kafka:
   scale: 3
+  health_check:
+    port: 9092
+    interval: 5000
+    unhealthy_threshold: 3
+    strategy: recreate
+    response_timeout: 5000
+    healthy_threshold: 2
