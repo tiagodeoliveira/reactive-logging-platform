@@ -21,3 +21,13 @@ On the log-generator folder, we have a groovy script who sends a 1000 messages t
 
 
 This stack is meant to run over Rancher cluster management. It will make really easier to provision and scale the infra on demand.
+
+To start the stacks you need to run `rancher-compose up` inside the stack folder. You should start the stack on the dependency order:
+
+1. Zookeeper
+2. Kafka
+3. Elasticsearch
+4. Kibana
+5. Fluentd
+
+To access the rancher API you should config the access/secret keys inside the env.sh file and run: `eval $(<env.sh)`.
